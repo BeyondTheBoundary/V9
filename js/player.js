@@ -6,8 +6,8 @@ VP9.player = function(options) {
 		return false;
 	}
 	else {
-		this.$player = $(options.tag);
-		this.id = this.$player.attr('id') ? this.$player.attr('id').split(' ')[0] : 'VP9_Player';
+		this.$player = $(options.tag); //css selector: id="#player"
+		this.id = this.$player.attr('id') ? this.$player.attr('id').split(' ')[0] : 'VP9_Player'; // id = VP9_Player
 	}
 
 	var _this = this;

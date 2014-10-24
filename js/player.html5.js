@@ -29,7 +29,7 @@ VP9.playerHTML5 = function(player) {
 			}
 	    });
 
-		//custom
+		// custom
 		player.$browseBtn.on('click', function() {
 			if (_this.player.paused) {
 				_this.player.play();
@@ -38,6 +38,7 @@ VP9.playerHTML5 = function(player) {
 				_this.player.pause();
 			}
 	    });
+	    // end custom
 
 
 	   	player.ready.call(this);
@@ -75,6 +76,30 @@ VP9.playerHTML5 = function(player) {
 			else {
 				_this.player.pause();
 			}
+		});
+		$('.customPause').on('click', function(event) {
+			event.preventDefault();
+			if (_this.player.paused) {
+				_this.player.play();
+			}
+			else {
+				_this.player.pause();
+			}
+		});
+		$('.customStop').on('click', function(event) {
+			event.preventDefault();
+			_this.player.currentTime = 0;
+			_this.player.pause();
+		});
+		$('.customSource').on('click', function(event) {
+			event.preventDefault();
+			var video_source = prompt("Input your source: ");
+			$('video').attr('src', video_source);
+			_this.player.play();
+		});
+		$('.customNext').on('click', function(event) {
+			event.preventDefault();
+			player.setVideo('next');
 		});
 		//end custom
 

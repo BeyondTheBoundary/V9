@@ -118,12 +118,13 @@ VP9.player = function(options) {
 				//_this.onClickPlay();
 			});
 
-		//custom
+		// custom
 		_this.addControl('browseBtn', '<button>Browse</button>', '.left')
 			.on('click', function(event) {
 				event.preventDefault();
 				//_this.onClickPlay();
 			});
+		// end custom
 
 		_this.addControl('networkSpeedBar', '<div class="nav-btn pull-left networkSpeed"></div>', '.left');
 		_this.addControl('mesgBar', '<div class="ppmsg"></div>', '.left');

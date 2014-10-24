@@ -30,7 +30,7 @@ VP9.playerHTML5 = function(player) {
 	    });
 
 		//custom
-		player.$playBtnCustom.on('click', function() {
+		player.$browseBtn.on('click', function() {
 			if (_this.player.paused) {
 				_this.player.play();
 			}
@@ -66,6 +66,18 @@ VP9.playerHTML5 = function(player) {
 			})
 			.appendTo(player.$display);
 
+		// custom
+		player.$media.on('click', function(event) {
+			event.preventDefault();
+			if (_this.player.paused) {
+				_this.player.play();
+			}
+			else {
+				_this.player.pause();
+			}
+		});
+		//end custom
+
 		player.$start = $('<div class="ppstart" style="display:none"></div>')
 			.on('click', function(event) {
 				event.preventDefault();
@@ -74,7 +86,6 @@ VP9.playerHTML5 = function(player) {
 			.appendTo(player.$display);
 
 		player.$buffering = $('<div class="ppbuffering_" style="display:none"></div>').appendTo(player.$display);
-
 	}
 
 	this.creatControls = function() {
@@ -458,6 +469,16 @@ VP9.playerHTML5 = function(player) {
 					'autobuffer': false,*/
 				})
 				.appendTo(player.$media);
+			// custom
+			   _this.$video.on('click', function() {
+					if (_this.player.paused) {
+						_this.player.play();
+					}
+					else {
+						_this.player.pause();
+					}
+			    });
+			// end custom
 			_this.player = _this.$video[0];
 
 			_this.ui.onEvent();

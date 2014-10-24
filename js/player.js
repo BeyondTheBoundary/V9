@@ -119,7 +119,7 @@ VP9.player = function(options) {
 			});
 
 		//custom
-		_this.addControl('playBtnCustom', '<button> Pause</button>', '.left')
+		_this.addControl('browseBtn', '<button>Browse</button>', '.left')
 			.on('click', function(event) {
 				event.preventDefault();
 				//_this.onClickPlay();

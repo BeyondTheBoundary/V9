@@ -52,6 +52,28 @@ VP9.playerHTML5 = function(player) {
 
 	this.destroy = function() {}
 
+	this.showPlaylist = function() {
+  		// write to HTML
+  		$(".playlist").append("<h3>Playlist | <small>Click video name to choose.</small></h3>");
+  		$(".playlist").append("<ul></ul>");
+  		var $list = $(".playlist ul");
+  		var $row;
+  		for(thing in player.options.playlist){
+  			console.log("track thing var: " + thing);
+  			$elePlaylist = player.options.playlist[thing][0];
+  			$row = $list.append("<li class='row-" + thing + "'><b>ID:</b> " + $elePlaylist.id + " <b>Name:</b> " + $elePlaylist.name + " <b>Source:</b> " + $elePlaylist.src + "</li>").css('cursor', 'pointer');
+  			
+  			$(".row-" + thing).on('click', function(event) {
+				event.preventDefault();
+				classname = $(this).attr('class');
+				classname = parseInt(classname.replace('row-', ''));
+				console.log(classname);
+				player.setVideo(classname);
+				console.log($(this));
+			});
+  		}
+	}
+
 	this.creatDisplay = function() {
 		player.$display = $('<div class="ppdisplay"></div>').appendTo(player.$player);
 		player.$media = $('<div id="' + player.id + '_media"></div>')
@@ -68,6 +90,8 @@ VP9.playerHTML5 = function(player) {
 			.appendTo(player.$display);
 
 		// custom
+		this.showPlaylist();
+
 		player.$media.on('click', function(event) {
 			event.preventDefault();
 			if (_this.player.paused) {
@@ -90,16 +114,23 @@ VP9.playerHTML5 = function(player) {
 			event.preventDefault();
 			_this.player.currentTime = 0;
 			_this.player.pause();
+			// remove src!!
 		});
+		/*
 		$('.customSource').on('click', function(event) {
 			event.preventDefault();
 			var video_source = prompt("Input your source: ");
 			$('video').attr('src', video_source);
 			_this.player.play();
 		});
+		*/
 		$('.customNext').on('click', function(event) {
 			event.preventDefault();
 			player.setVideo('next');
+		});
+		$('.customPrevious').on('click', function(event) {
+			event.preventDefault();
+			player.setVideo('prev');
 		});
 		//end custom
 

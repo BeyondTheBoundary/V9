@@ -53,6 +53,7 @@ VP9.player = function(options) {
 		console.log('init player');
 		if ($.inArray(_this.options.tech, _this.techs) >= 0) {
 			_this.tech = new VP9['player' + _this.options.tech](_this);
+			_this.hello = _this.tech.hello;
 		}
 		else {
 			console.log('videoPlayerTech không được hỗ trợ');
@@ -119,10 +120,11 @@ VP9.player = function(options) {
 			});
 
 		// custom
-		_this.addControl('browseBtn', '<button>Browse</button>', '.left')
+		_this.addControl('browseBtn', '<button>Say Something....</button>', '.left')
 			.on('click', function(event) {
 				event.preventDefault();
 				//_this.onClickPlay();
+				alert(foo);
 			});
 		// end custom
 

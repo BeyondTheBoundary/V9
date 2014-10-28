@@ -1,6 +1,10 @@
 var VP9 = VP9 || {};
 
 VP9.playerHTML5 = function(player) {
+	hello = function(){
+		alert("Hello!");
+	}
+	
 	var _this = this;
 
 	this.name = 'HTML5';
@@ -29,18 +33,6 @@ VP9.playerHTML5 = function(player) {
 			}
 	    });
 
-		// custom
-		player.$browseBtn.on('click', function() {
-			if (_this.player.paused) {
-				_this.player.play();
-			}
-			else {
-				_this.player.pause();
-			}
-	    });
-	    // end custom
-
-
 	   	player.ready.call(this);
     	if (typeof(player.options.ready) == 'function') {
 	   		player.options.ready.call(this, player);
@@ -52,24 +44,103 @@ VP9.playerHTML5 = function(player) {
 
 	this.destroy = function() {}
 
-	this.showPlaylist = function() {
+	this.customSource = function(str){
+		player.options.playlist = [{
+                0: {
+                    id: '',
+                    name: 'New video',
+                    src: str,
+                    type: 'video/mp4',
+                    subtitle: ['', '']
+                }
+            }]
+		player.setVideo(0);
+	    _this.updatePlaylist();
+	}
+
+	this.singleFileMode = function(){
+		var backupPlaylist;
+		$('.playlist').append("<h3>Single File Mode: <button id='addSingleFile'>+ Add</button></h3>");
+		$('#addSingleFile').on('click', function(){
+			// BAK plan
+			backupPlaylist = player.options.playlist;
+			console.log("value returnPlaylist: " + $('#returnPlaylist').length)
+			if ($('#returnPlaylist').length == 0){
+				$('.playlist').append("<button id='returnPlaylist'>Return to playlist...</button>");
+				$('#returnPlaylist').on('click', function(){
+						player.options.playlist = backupPlaylist;
+						_this.updatePlaylist();
+						player.setVideo(0);
+						$('#returnPlaylist').remove();
+				});
+			}
+  			var addVideoSrc = prompt("input your source");
+  			var addVideoName = prompt("input your video name");
+			player.options.playlist = [{
+                    0: {
+                        id: '',
+                        name: addVideoName,
+                        src: addVideoSrc,
+                        type: 'video/mp4',
+                        subtitle: ['', '']
+                    }
+                }]
+			player.setVideo(0);
+		    _this.updatePlaylist();
+		});
+		
+	}	
+	
+	this.playlistModeInit = function() {
   		// write to HTML
-  		$(".playlist").append("<h3>Playlist | <small>Click video name to choose.</small></h3>");
+  		$(".playlist").append("<h3>Playlist Mode <button id='addVideo'>+ Add</button></h3>");
   		$(".playlist").append("<ul></ul>");
-  		var $list = $(".playlist ul");
-  		var $row;
-  		for(thing in player.options.playlist){
+
+  		$("#addVideo").on('click', function(){
+  			var addVideoSrc = prompt("input your source");
+  			var addVideoName = prompt("input your video name");
+  			if (addVideoSrc != '' && addVideoSrc != null){
+	  			var temp = {
+		            0: {
+		                id: '',
+		                name: addVideoName,
+		                src: addVideoSrc,
+		                type: 'video/mp4',
+		                subtitle: ['', '']
+		            }
+		        };
+		        player.addItem(temp);
+		        _this.updatePlaylist();
+			} else
+				alert("Invalid Video!");
+  		});
+  		
+  		this.updatePlaylist();
+	}
+
+	this.updatePlaylist = function(){
+		var $list = $(".playlist ul");
+		$list.empty();
+  		var $row, idname;
+		for(thing in player.options.playlist){
   			console.log("track thing var: " + thing);
+
   			$elePlaylist = player.options.playlist[thing][0];
-  			$row = $list.append("<li class='row-" + thing + "'><b>ID:</b> " + $elePlaylist.id + " <b>Name:</b> " + $elePlaylist.name + " <b>Source:</b> " + $elePlaylist.src + "</li>").css('cursor', 'pointer');
+  			$row = $list.append("<li><b>ID:</b> " + $elePlaylist.id + " <b>Name:</b> " + $elePlaylist.name + " <b>Source:</b> " + $elePlaylist.src + " <button id='row-" + thing + "'>Play</button> <button id='remove-row-" + thing + "'>Remove</button> </li>");
   			
-  			$(".row-" + thing).on('click', function(event) {
+  			$("#row-" + thing).on('click', function(event) {
 				event.preventDefault();
-				classname = $(this).attr('class');
-				classname = parseInt(classname.replace('row-', ''));
-				console.log(classname);
-				player.setVideo(classname);
-				console.log($(this));
+				idname = $(this).attr('id');
+				idname = parseInt(idname.replace('row-', ''));
+				player.setVideo(idname);
+			});
+			$("#remove-row-" + thing).on('click', function(event) {
+				event.preventDefault();
+				idname = $(this).attr('id');
+				idname = parseInt(idname.replace('remove-row-', ''));
+				// remove + reindex
+				if ($.isNumeric(player.removeItem(idname)))
+			        _this.updatePlaylist();
 			});
   		}
 	}
@@ -90,7 +161,8 @@ VP9.playerHTML5 = function(player) {
 			.appendTo(player.$display);
 
 		// custom
-		this.showPlaylist();
+		this.singleFileMode();
+		this.playlistModeInit();
 
 		player.$media.on('click', function(event) {
 			event.preventDefault();
@@ -611,7 +683,12 @@ VP9.playerHTML5 = function(player) {
 				return item;
 			});
     		if (index == player.activeVideo) {
-    			//console.log('can not remove item when playing');
+    			// DEBUG
+    			// stop
+    			// remove
+    			// if not at the end -> play current id
+    			// 		else play new length -1
+    			alert('can not remove item when playing');
     			return false;
     		}
     		else {
@@ -623,7 +700,8 @@ VP9.playerHTML5 = function(player) {
     	}
     	else {
     		return false;
-    		//console.log('delete item not live');
+    		// DEBUG
+    		alert('delete item not live');
     	}
     }
 

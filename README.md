@@ -2,12 +2,12 @@
 
 ## Milestone
 * [x] Make custom controls
-* [ ] Make Playlist  
+* [x] Make Playlist  
    > View  
    > Controler
 * [ ] Design Menu - Auto hide controller immediately
-* [ ] Fix bug
+* [x] Fix bug
 * [ ] Open from local (/w handle unknow format)
-* [ ] Open from server
+* [x] Open from server
 * [ ] Open from device
 * [ ] Build to Cordova

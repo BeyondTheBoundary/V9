@@ -60,7 +60,7 @@ VP9.playerHTML5 = function(player) {
 
 	this.singleFileMode = function(){
 		var backupPlaylist;
-		$('.playlist').append("<h3>Single File Mode: <button id='addSingleFile'>+ Add</button></h3>");
+		$('.playlist').append("<h3>Single File Open: </h3><button id='addSingleFile'>+ Add from URL</button> or Add from Local <input type='file' id='addLocalFile'>");
 		$('#addSingleFile').on('click', function(){
 			// BAK plan
 			backupPlaylist = player.options.playlist;
@@ -88,12 +88,28 @@ VP9.playerHTML5 = function(player) {
 			player.setVideo(0);
 		    _this.updatePlaylist();
 		});
+		$('#addLocalFile').on('change', function(){
+			var URL = window.URL || window.webkitURL;
+			var file = this.files[0];
+			var fileURL = URL.createObjectURL(file);
+			player.options.playlist = [{
+                    0: {
+                        id: '',
+                        name: file.name,
+                        src: fileURL,
+                        type: 'video/mp4',
+                        subtitle: ['', '']
+                    }
+                }]
+			player.setVideo(0);
+		    _this.updatePlaylist();
+		});
 		
 	}	
 	
 	this.playlistModeInit = function() {
   		// write to HTML
-  		$(".playlist").append("<h3>Playlist Mode <button id='addVideo'>+ Add</button></h3>");
+  		$(".playlist").append("<h3>Manage Playlist <button id='addVideo'>+ Add</button></h3>");
   		$(".playlist").append("<ul></ul>");
 
   		$("#addVideo").on('click', function(){
@@ -590,8 +606,8 @@ VP9.playerHTML5 = function(player) {
 					'id' : player.id + '_media_html5',
 					'width': '100%',
 					'height': '100%',
-					/*'poster': '',
-					'loop': false,
+					'poster': 'curiosity.jpg',
+					/*'loop': false,
 					'autoplay': false,
 					'preload': 'none',
 					'autobuffer': false,*/

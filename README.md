@@ -7,7 +7,8 @@
    > Controler
 * [ ] Design Menu - Auto hide controller immediately
 * [x] Fix bug
-* [ ] Open from local (/w handle unknow format)
+* [x] Open from local (/w handle unknow format)
 * [x] Open from server
-* [ ] Open from device
-* [ ] Build to Cordova
+* [x] Open from device
+* [x] Build to Android
+* [ ] Build to Ubuntu
